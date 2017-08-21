@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Review Email System | Admin</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!-- Bootstrap -->
+    <link href="/css/bootstrap.min.css" rel="stylesheet" media="screen">
+    <link href="/css/application.css" rel="stylesheet" media="screen">
+  </head>
+  <body>
+    <nav class="navbar navbar-dark bg-dark">
+      <a class="navbar-brand" href="/">Review Email System - ADMIN</a>
+    </nav> 
+    <div class="container">
+      <% flash.each do |type, message| %>
+        <div class="alert alert-<%= type %>" role="alert">
+          <%= message %>
+        </div>
+      <% end %>
+      <table class="table table-striped">
+        <thead>
+          <tr>
+            <th>Arrival Date (GMT)</th>
+            <th>From</th>
+            <th>Subject</th>
+            <th>Sentiment Score</th>
+            <th>Publish?</th>
+          </tr>
+        </thead>
+        <tbody>
+          <% @reviews.each do |review| %>
+            <tr>
+              <td><%= json_to_ruby_time(review[:sent_at]).strftime('%F %H:%M') %></td>
+              <td><%= review[:from] %></td>
+              <td><%= review[:subject] %></td>
+              <td><%= review[:score] %></td>
+              <td>
+                <form action="/reviews/<%= review[:id] %>" method="POST">
+                  <select onchange="this.form.submit()" class="form-control" name="review[published]">
+                    <% [false, true].each do |value| %>
+                      <option value="<%= value %>" <%= 'selected' if value == review[:published] %>><%= value ? 'Yes' : 'No' %></option>
+                    <% end %>
+                  </select>
+                </form>
+              </td>
+            </tr>
+          <% end %>
+        </tbody>
+      </table>
+    </div>
+    <script src="http://code.jquery.com/jquery.js"></script>
+    <script src="/js/bootstrap.min.js"></script>
+  </body>
+</html>
