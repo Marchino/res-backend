@@ -8,4 +8,4 @@ end
 gem 'sinatra'
 gem 'sinatra-flash'
 gem 'httparty'
-
+gem 'dotenv'

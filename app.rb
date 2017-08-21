@@ -2,12 +2,14 @@ require 'sinatra'
 require 'sinatra/flash'
 require 'httparty'
 require 'json'
+require 'dotenv/load'
 
 enable :sessions
 
 class Review
   include HTTParty
-  base_uri 'http://localhost:3000'
+  base_uri ENV['REVIEWS_API_BASE_URL']
+
   def self.fetch
     response = get '/reviews', format: :plain
     JSON.parse response, symbolize_names: true
